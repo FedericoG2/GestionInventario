@@ -88,7 +88,20 @@ namespace GestionInventario
             {
                 if (e.ColumnIndex == dataGridView1.Columns["Editar"].Index)
                 {
-                    MessageBox.Show("Se editó el producto: " + dataGridView1.Rows[e.RowIndex].Cells["Codigo"].Value);
+                    // Obtener el código del producto desde la fila seleccionada
+                    string codigoProducto = dataGridView1.Rows[e.RowIndex].Cells["Codigo"].Value.ToString();
+
+                    // Buscar el producto correspondiente en la lista de productos
+                    var producto = productos.FirstOrDefault(p => p.Codigo == codigoProducto);
+                    if (producto != null)
+                    {
+                        // Crear una instancia del formulario Editar y pasar el producto
+                        Editar formularioEditar = new Editar(producto);
+                        formularioEditar.ShowDialog(); // Mostrar como diálogo
+
+                        // Actualizar la grilla después de editar
+                        CargarProductos();
+                    }
                 }
                 else if (e.ColumnIndex == dataGridView1.Columns["Eliminar"].Index)
                 {
@@ -103,6 +116,7 @@ namespace GestionInventario
                 }
             }
         }
+
 
         private void BuscarProductos(string searchTerm)
         {
